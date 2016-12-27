@@ -1,0 +1,77 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>DynamicTable</title>
+    </h:head>
+    <h:body>
+       <h3></h3>
+		<h:form>
+
+	        #{dynamicTable.viewDate}
+			<p:dataTable value="#{dynamicTable.rows}" var="table">
+			<p:column>
+			 <h:outputText value="#{table}" />
+			</p:column>
+				<p:columns value="#{dynamicTable.dataTableColumns}" var="column" >
+		            <f:facet name="header">
+		                <h:outputText value="#{column.header}" />
+		            </f:facet>
+		            <h:outputText value="#{dynamicTable.getColContent(column.header,table)}" />
+		      				       
+				</p:columns>
+				
+		    </p:dataTable>
+
+
+		<p:commandButton id="rowBtn" value="Add Row" type="button" />
+		<p:overlayPanel id="rowPanel" for="rowBtn" hideEffect="fade">
+			<table>
+				<tr>
+					<td><p:inputText size="5" value="#{dynamicTable.rowName}" /></td>
+					<td><h:commandButton value="Add Row"
+							action="#{dynamicTable.addRow}" /></td>
+				</tr>
+			</table>
+		</p:overlayPanel>
+
+
+		<p:commandButton id="colBtn" value="Add Column" type="button" />
+		<p:overlayPanel id="colPanel" for="colBtn" hideEffect="fade">
+			<table>
+				<tr>
+					<td><p:inputText size="5" value="#{dynamicTable.colName}" /></td>
+					<td><h:commandButton value="Add Column"
+							action="#{dynamicTable.addColumn}" /></td>
+				</tr>
+			</table>
+		</p:overlayPanel>
+
+		<br/>
+    		<br/>
+		<p:commandButton id="filterBtn" value="Filter Grid" type="button" />
+		<p:overlayPanel id="filterPanel" for="filterBtn" hideEffect="fade"
+			dynamic="true" style="width:600px" showCloseIcon="true">
+			<p:panelGrid>
+				<p:outputLabel for="inline" value="Inline:" />
+				<p:calendar id="inline" value="#{dynamicTable.date}" mode="inline" />
+		
+		 Columns<p:selectManyCheckbox id="grid"
+					value="#{dynamicTable.selectedCols}" layout="grid" columns="3">
+					<f:selectItems value="#{dynamicTable.showColumns}" var="column"
+						itemLabel="#{column.header}" itemValue="#{column.header}" />
+				</p:selectManyCheckbox>
+		Rows<p:selectManyCheckbox id="grid2"
+					value="#{dynamicTable.selectedRows}" layout="grid" columns="3">
+					<f:selectItems value="#{dynamicTable.showRows}" var="table"
+						itemLabel="#{table}" itemValue="#{table}" />
+				</p:selectManyCheckbox>
+				<h:commandButton value="Filter" action="#{dynamicTable.filterData}" />
+			</p:panelGrid>
+		</p:overlayPanel>
+
+
+
+	</h:form>
+    </h:body>
+</html>	
